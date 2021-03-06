@@ -10,19 +10,21 @@ public class WorkKomb implements Job {
     private Timeline timeLine;
     private String pathToGame;
     private String mail;
+    private String pathToJava;
     Mouse mouse = new Mouse();
     KeyBoard keyBoard = new KeyBoard();
 
-    public void startSection(String pathToGame, String mail){
+    public void startSection(String pathToJava, String pathToGame, String mail){
+        this.pathToJava = pathToJava;
         this.pathToGame = pathToGame;
         this.mail = mail;
 
-        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(1), e -> {
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time), e -> {
             Runtime run = Runtime.getRuntime();
             Process process = null;
 
             try {
-                process = run.exec(pathToGame);
+                process = run.exec(pathToJava + " " + pathToGame);
             }
             catch (Exception er) {
                 System.out.println(er);
@@ -45,6 +47,11 @@ public class WorkKomb implements Job {
         }));
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 6), e -> {
+            mouse.moveXY(Skript.arrCoords[1][0], Skript.arrCoords[1][1]);
+            mouse.clickButton();
+        }));
+
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 7), e -> {
             mouse.moveXY(Skript.arrCoords[1][0], Skript.arrCoords[1][1]);
             mouse.clickButton();
         }));
@@ -124,7 +131,7 @@ public class WorkKomb implements Job {
         timeLine = new Timeline();
 
         exitSection();
-        startSection(pathToGame, mail);
+        startSection(pathToJava, pathToGame, mail);
     }
 
     public WorkKomb(Timeline timeLine) {

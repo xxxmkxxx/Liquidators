@@ -1,7 +1,10 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
 import com.xxxmkxxx.liquidatorsHCS.files.Files;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.util.Duration;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -9,10 +12,7 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.Serializable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
@@ -21,7 +21,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 public class Skript implements Serializable {
     private Timeline timeLine = new Timeline();
-    static int time;
+    static int time = 1;
     static int arrCoords[][];
 
     public void runScript(){
@@ -30,7 +30,8 @@ public class Skript implements Serializable {
 
         String pathToMail = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Mail.txt";
         String pathToCoords = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Coords.txt";
-        String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.exe";
+        String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.jar";
+        String pathToJava = "\"C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java\" -jar";
 
         List<String> listMail = files.readFileToArray(pathToMail);
         Queue<String> queueMail = listToQueue(listMail);
@@ -54,25 +55,15 @@ public class Skript implements Serializable {
             e.printStackTrace();
         }
 
-
-        AtomicBoolean onFineshed = new AtomicBoolean(true);
         Iterator iterator = queueMail.iterator();
-        while(iterator.hasNext() && onFineshed.get()) {
-            onFineshed.set(false);
-            time = 0;
-
-            workKomb.startSection(pathToGame, queueMail.peek());
-            iterator.remove();
+        while (iterator.hasNext()) {
+            workKomb.startSection(pathToJava, pathToGame, queueMail.peek());
+            queueMail.poll();
             workKomb.stayAFKSection(20, 2);
             workKomb.exitSection();
+        }
 
-            timeLine.play();
-
-            timeLine.setOnFinished(e -> {
-                onFineshed.set(true);
-                timeLine = new Timeline();
-            });
-       }
+        timeLine.play();
     }
 
     private static int [][] setCoords(String pathToCoords){
