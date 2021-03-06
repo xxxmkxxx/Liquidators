@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xxxmkxxx.liquidatorsHCS.gui.controllers.MainController">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Файл">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Выбрать файл" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Опции">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Настройки" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Помощь">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Техническая поддержка" />
+                        <MenuItem mnemonicParsing="false" text="Часто задаваемые вопросы" />
+                        <MenuItem mnemonicParsing="false" text="Обученние" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="Общая информация">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="Общее колличество аккаунтов:" />
+                              <Label layoutX="192.0" layoutY="14.0" text="0 аккаунтов" />
+                              <Label layoutX="14.0" layoutY="31.0" text="Общее время для фарма:" />
+                              <Label layoutX="162.0" layoutY="31.0" text="0 часов" />
+                              <Label layoutX="14.0" layoutY="48.0" text="Колличество предполагаемых млк:" />
+                              <Label layoutX="215.0" layoutY="48.0" text="0 млк" />
+                              <Label layoutX="304.0" layoutY="14.0" text="Номер группы аккаунтов:" />
+                              <Label layoutX="453.0" layoutY="14.0" text="1 группа" />
+                              <Label layoutX="304.0" layoutY="31.0" text="Ник расходного аккаунта:" />
+                              <Label layoutX="453.0" layoutY="31.0" text="TestAccaunt" />
+                              <Button fx:id="updateButton" layoutX="226.0" layoutY="132.0" mnemonicParsing="false" text="Обновить информацию" />
+                              <Label layoutX="304.0" layoutY="48.0" text="Время для 1 аккаунта: " />
+                              <Label layoutX="432.0" layoutY="48.0" text="20 минут" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="Процесс фарма...">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="Номер текущего аккаунта:" />
+                              <Label layoutX="166.0" layoutY="14.0" text="1" />
+                              <Label layoutX="14.0" layoutY="31.0" text="Ник текущего аккаунта:" />
+                              <Label layoutX="146.0" layoutY="31.0" text="TestAccount" />
+                              <Label layoutX="14.0" layoutY="48.0" text="Прошедшее время:" />
+                              <Label layoutX="130.0" layoutY="48.0" text="0" />
+                              <Label layoutX="146.0" layoutY="48.0" text="минут" />
+                              <MenuButton layoutX="439.0" layoutY="10.0" mnemonicParsing="false" text="Выберите действие...">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Запуск фарма" onAction="#startScript"/>
+                                  <MenuItem mnemonicParsing="false" text="Пауза" onAction="#pauseScript"/>
+                                    <MenuItem mnemonicParsing="false" text="Продолжить фарм" onAction="#continueScript"/>
+                                    <MenuItem mnemonicParsing="false" text="Остановка фарма" onAction="#stopScript"/>
+                                </items>
+                              </MenuButton>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </children>
+</Pane>
