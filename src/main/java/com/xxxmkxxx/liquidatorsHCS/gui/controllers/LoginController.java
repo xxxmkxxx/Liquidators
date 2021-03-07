@@ -62,6 +62,7 @@ public class LoginController {
         accounts.put("maks11189412", "123789456++*+123");
         accounts.put("Keltek", "1576481320w");
         accounts.put("xxxmkxxx", "1237894560");
+        accounts.put("Cyrex12", "qetuo2");
     }
 
     public void isPressEnter() {

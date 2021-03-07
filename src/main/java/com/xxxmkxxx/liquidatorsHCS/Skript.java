@@ -31,7 +31,7 @@ public class Skript implements Serializable {
         String pathToMail = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Mail.txt";
         String pathToCoords = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Coords.txt";
         String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.jar";
-        String pathToJava = "\"C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java\" -jar";
+        String pathToJava = "C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java -jar";
 
         List<String> listMail = files.readFileToArray(pathToMail);
         Queue<String> queueMail = listToQueue(listMail);
