@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xxxmkxxx.liquidatorsHCS.gui.controllers.MainController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
@@ -66,18 +65,18 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" text="Номер текущего аккаунта:" />
-                              <Label layoutX="166.0" layoutY="14.0" text="1" />
+                              <Label fx:id="currentNumberAccauntLabel" layoutX="166.0" layoutY="14.0" text="1" />
                               <Label layoutX="14.0" layoutY="31.0" text="Ник текущего аккаунта:" />
-                              <Label layoutX="146.0" layoutY="31.0" text="TestAccount" />
+                              <Label fx:id="currentNickAccauntLabel" layoutX="146.0" layoutY="31.0" text="TestAccount" />
                               <Label layoutX="14.0" layoutY="48.0" text="Прошедшее время:" />
-                              <Label layoutX="130.0" layoutY="48.0" text="0" />
+                              <Label fx:id="currentElapsedTimeLabel" layoutX="130.0" layoutY="48.0" text="0" />
                               <Label layoutX="146.0" layoutY="48.0" text="минут" />
                               <MenuButton layoutX="439.0" layoutY="10.0" mnemonicParsing="false" text="Выберите действие...">
                                 <items>
-                                  <MenuItem mnemonicParsing="false" text="Запуск фарма" onAction="#startScript"/>
-                                  <MenuItem mnemonicParsing="false" text="Пауза" onAction="#pauseScript"/>
-                                    <MenuItem mnemonicParsing="false" text="Продолжить фарм" onAction="#continueScript"/>
-                                    <MenuItem mnemonicParsing="false" text="Остановка фарма" onAction="#stopScript"/>
+                                  <MenuItem mnemonicParsing="false" onAction="#startScript" text="Запуск фарма" />
+                                  <MenuItem mnemonicParsing="false" onAction="#pauseScript" text="Пауза" />
+                                    <MenuItem mnemonicParsing="false" onAction="#continueScript" text="Продолжить фарм" />
+                                    <MenuItem mnemonicParsing="false" onAction="#stopScript" text="Остановка фарма" />
                                 </items>
                               </MenuButton>
                            </children>
@@ -86,6 +85,11 @@
                 </Tab>
               </tabs>
             </TabPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="stateLabel" layoutX="286.0" layoutY="86.0" />
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
    </children>

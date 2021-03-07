@@ -1,19 +1,16 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
 import com.xxxmkxxx.liquidatorsHCS.files.Files;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
-import javafx.util.Duration;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
 import static org.quartz.JobBuilder.newJob;
@@ -23,22 +20,23 @@ public class Skript implements Serializable {
     private Timeline timeLine = new Timeline();
     static int time = 1;
     static int arrCoords[][];
+    private Scheduler scheduler = null;
+    private List<String> listMail;
 
-    public void runScript(){
+    public void runScript(int indexAccaunt){
         Files files = new Files();
         WorkKomb workKomb = new WorkKomb(timeLine);
 
         String pathToMail = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Mail.txt";
         String pathToCoords = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Coords.txt";
         String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.jar";
-        String pathToJava = "C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java -jar";
+        String pathToJava = "C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java";
 
-        List<String> listMail = files.readFileToArray(pathToMail);
-        Queue<String> queueMail = listToQueue(listMail);
+        listMail = files.readFileToArray(pathToMail);
         arrCoords = setCoords(pathToCoords);
 
         try {
-            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+            scheduler = StdSchedulerFactory.getDefaultScheduler();
 
             JobDetail job = newJob(WorkKomb.class)
                     .withIdentity("restartSection", "restart")
@@ -55,12 +53,14 @@ public class Skript implements Serializable {
             e.printStackTrace();
         }
 
-        Iterator iterator = queueMail.iterator();
-        while (iterator.hasNext()) {
-            workKomb.startSection(pathToJava, pathToGame, queueMail.peek());
-            queueMail.poll();
+        for(int i = indexAccaunt; i < listMail.size(); i++) {
+            workKomb.startSection(pathToJava, pathToGame, listMail.get(i), i);
             workKomb.stayAFKSection(20, 2);
             workKomb.exitSection();
+
+            if(listMail.size() - 1 == i) {
+                new File("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt").delete();
+            }
         }
 
         timeLine.play();
@@ -81,13 +81,10 @@ public class Skript implements Serializable {
     public Timeline getTimeLine() {
         return timeLine;
     }
-
-    private static Queue listToQueue(List list){
-        Queue queueTemp = new LinkedList();
-
-        for (Object o : list) {
-            queueTemp.add(o);
-        }
-        return queueTemp;
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
+    public List <String> getListMail() {
+        return listMail;
     }
 }

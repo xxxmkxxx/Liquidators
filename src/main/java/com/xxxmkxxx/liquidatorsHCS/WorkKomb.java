@@ -6,28 +6,39 @@ import javafx.util.Duration;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
+import java.io.*;
+
 public class WorkKomb implements Job {
     private Timeline timeLine;
     private String pathToGame;
     private String mail;
     private String pathToJava;
+    private int indexAccaunt;
     Mouse mouse = new Mouse();
     KeyBoard keyBoard = new KeyBoard();
 
-    public void startSection(String pathToJava, String pathToGame, String mail){
+    public void startSection(String pathToJava, String pathToGame, String mail, int indexAccaunt){
         this.pathToJava = pathToJava;
         this.pathToGame = pathToGame;
         this.mail = mail;
+        this.indexAccaunt = indexAccaunt;
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time), e -> {
             Runtime run = Runtime.getRuntime();
             Process process = null;
 
             try {
-                process = run.exec(pathToJava + " " + pathToGame);
+                process = run.exec(pathToJava + " -jar " + pathToGame);
             }
             catch (Exception er) {
                 System.out.println(er);
+            }
+
+            try(FileWriter fileWriter = new FileWriter("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt", false)) {
+                fileWriter.write(String.valueOf(indexAccaunt));
+                fileWriter.flush();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
             }
         }));
 
@@ -131,7 +142,7 @@ public class WorkKomb implements Job {
         timeLine = new Timeline();
 
         exitSection();
-        startSection(pathToJava, pathToGame, mail);
+        startSection(pathToJava, pathToGame, mail, indexAccaunt);
     }
 
     public WorkKomb(Timeline timeLine) {
