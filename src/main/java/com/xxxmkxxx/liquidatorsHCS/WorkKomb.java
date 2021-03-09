@@ -1,5 +1,6 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
+import com.xxxmkxxx.liquidatorsHCS.files.Files;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -16,6 +17,7 @@ public class WorkKomb implements Job {
     private int indexAccaunt;
     Mouse mouse = new Mouse();
     KeyBoard keyBoard = new KeyBoard();
+    Files files = new Files();
 
     public void startSection(String pathToJava, String pathToGame, String mail, int indexAccaunt){
         this.pathToJava = pathToJava;
@@ -34,12 +36,7 @@ public class WorkKomb implements Job {
                 System.out.println(er);
             }
 
-            try(FileWriter fileWriter = new FileWriter("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt", false)) {
-                fileWriter.write(String.valueOf(indexAccaunt));
-                fileWriter.flush();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            files.writeLineToFile("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt", String.valueOf(indexAccaunt));
         }));
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 30), e -> {

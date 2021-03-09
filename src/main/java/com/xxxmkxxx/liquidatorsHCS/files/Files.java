@@ -42,4 +42,14 @@ public class Files{
             e.printStackTrace();
         }
     }
+
+    //Запись строки в файл с заменой старой строки
+    public void writeLineToFile(String pathToFile, String line) {
+        try(FileWriter fileWriter = new FileWriter(pathToFile, false)) {
+            fileWriter.write(line);
+            fileWriter.flush();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
 }

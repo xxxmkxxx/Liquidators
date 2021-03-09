@@ -1,7 +1,9 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
 import com.xxxmkxxx.liquidatorsHCS.files.Files;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.util.Duration;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -9,32 +11,49 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.*;
 
 import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public class Skript implements Serializable {
-    private Timeline timeLine = new Timeline();
+public class Skript {
+    private Timeline timeLine;
     static int time = 1;
+    private int allTime = 0;
     static int arrCoords[][];
     private Scheduler scheduler = null;
     private List<String> listMail;
+    private String pathToMail = "";
+    private String pathToCoords = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Coords.txt";
+    private String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.jar";
+    private String pathToJava = "C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java";
+    private int indexAccaunt = 0;
 
-    public void runScript(int indexAccaunt){
+    public void buildScript() {
         Files files = new Files();
+        timeLine = new Timeline();
         WorkKomb workKomb = new WorkKomb(timeLine);
-
-        String pathToMail = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Mail.txt";
-        String pathToCoords = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Coords.txt";
-        String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.jar";
-        String pathToJava = "C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java";
 
         listMail = files.readFileToArray(pathToMail);
         arrCoords = setCoords(pathToCoords);
 
+        for(int i = indexAccaunt; i < listMail.size(); i++) {
+            workKomb.startSection(pathToJava, pathToGame, listMail.get(i), i);
+            workKomb.stayAFKSection(20, 2);
+            workKomb.exitSection();
+            if(i == listMail.size() - 1) {
+                timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time), e -> {
+                    new File("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt").delete();
+                }));
+            }
+        }
+
+        allTime = time;
+        time = 1;
+    }
+
+    public void runScheduler() {
         try {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
 
@@ -52,18 +71,6 @@ public class Skript implements Serializable {
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
-
-        for(int i = indexAccaunt; i < listMail.size(); i++) {
-            workKomb.startSection(pathToJava, pathToGame, listMail.get(i), i);
-            workKomb.stayAFKSection(20, 2);
-            workKomb.exitSection();
-
-            if(listMail.size() - 1 == i) {
-                new File("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt").delete();
-            }
-        }
-
-        timeLine.play();
     }
 
     private static int [][] setCoords(String pathToCoords){
@@ -86,5 +93,18 @@ public class Skript implements Serializable {
     }
     public List <String> getListMail() {
         return listMail;
+    }
+    public int getCountAccaunt() {
+        return listMail.size();
+    }
+    public int getAllTime() {
+        return allTime;
+    }
+
+    public void setPathToMail(String pathToMail) {
+        this.pathToMail = pathToMail;
+    }
+    public void setIndexAccaunt(int index) {
+        indexAccaunt = index;
     }
 }

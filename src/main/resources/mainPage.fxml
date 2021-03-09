@@ -20,7 +20,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Выбрать файл" />
+                    <MenuItem mnemonicParsing="false" onAction="#chooseFile" text="Выбрать файл"/>
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Опции">
@@ -44,18 +44,23 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" text="Общее колличество аккаунтов:" />
-                              <Label layoutX="192.0" layoutY="14.0" text="0 аккаунтов" />
+                              <Label fx:id="countAccauntLabel" layoutX="194.0" layoutY="14.0" text="" />
+                              <Label layoutX="219.0" layoutY="14.0" text="аккаунтов" />
                               <Label layoutX="14.0" layoutY="31.0" text="Общее время для фарма:" />
-                              <Label layoutX="162.0" layoutY="31.0" text="0 часов" />
+                              <Label fx:id="allTimeToFarmLabel" layoutX="160.0" layoutY="31.0" text="" />
+                              <Label layoutX="187.0" layoutY="31.0" text="часов" />
                               <Label layoutX="14.0" layoutY="48.0" text="Колличество предполагаемых млк:" />
-                              <Label layoutX="215.0" layoutY="48.0" text="0 млк" />
+                              <Label fx:id="countAllMlkLabel" layoutX="212.0" layoutY="48.0" text="" />
+                              <Label layoutX="236.0" layoutY="48.0" text="млк" />
                               <Label layoutX="304.0" layoutY="14.0" text="Номер группы аккаунтов:" />
-                              <Label layoutX="453.0" layoutY="14.0" text="1 группа" />
+                              <Label fx:id="numberAccauntGroupLabel" layoutX="454.0" layoutY="14.0" text="1" />
+                              <Label layoutX="467.0" layoutY="14.0" text="группа" />
                               <Label layoutX="304.0" layoutY="31.0" text="Ник расходного аккаунта:" />
-                              <Label layoutX="453.0" layoutY="31.0" text="TestAccaunt" />
-                              <Button fx:id="updateButton" layoutX="226.0" layoutY="132.0" mnemonicParsing="false" text="Обновить информацию" />
+                              <Label fx:id="tempNickLabel" layoutX="453.0" layoutY="31.0" text="" />
                               <Label layoutX="304.0" layoutY="48.0" text="Время для 1 аккаунта: " />
-                              <Label layoutX="432.0" layoutY="48.0" text="20 минут" />
+                              <Label fx:id="timeAccauntLabel" layoutX="440.0" layoutY="48.0" text="" />
+                              <Label layoutX="461.0" layoutY="48.0" text="минут" />
+                               <Button fx:id="updateButton" layoutX="226.0" layoutY="132.0" mnemonicParsing="false" text="Обновить информацию" onAction="#updateInfo"/>
                            </children>
                         </AnchorPane>
                   </content>
@@ -65,9 +70,9 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <Label layoutX="14.0" layoutY="14.0" text="Номер текущего аккаунта:" />
-                              <Label fx:id="currentNumberAccauntLabel" layoutX="166.0" layoutY="14.0" text="1" />
+                              <Label fx:id="currentNumberAccauntLabel" layoutX="166.0" layoutY="14.0" text="" />
                               <Label layoutX="14.0" layoutY="31.0" text="Ник текущего аккаунта:" />
-                              <Label fx:id="currentNickAccauntLabel" layoutX="146.0" layoutY="31.0" text="TestAccount" />
+                              <Label fx:id="currentNickAccauntLabel" layoutX="146.0" layoutY="31.0" text="" />
                               <Label layoutX="14.0" layoutY="48.0" text="Прошедшее время:" />
                               <Label fx:id="currentElapsedTimeLabel" layoutX="130.0" layoutY="48.0" text="0" />
                               <Label layoutX="146.0" layoutY="48.0" text="минут" />
@@ -87,7 +92,8 @@
             </TabPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="stateLabel" layoutX="286.0" layoutY="86.0" />
+                  <Label fx:id="stateLabel" layoutX="293.0" layoutY="86.0" />
+                  <Label fx:id="errorLabel" layoutX="290.0" layoutY="137.0" />
                </children>
             </AnchorPane>
          </children>
