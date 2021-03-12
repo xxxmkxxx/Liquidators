@@ -45,7 +45,6 @@ public class ControlGUI {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
-        stage.show();
 
         return stage;
     }
@@ -62,5 +61,9 @@ public class ControlGUI {
 
     public static Stage getStage(Button button) {
         return (Stage) button.getScene().getWindow();
+    }
+
+    public static Stage getStage(Class anyClass, String nameFXML) {
+        return connectFXML(anyClass, nameFXML);
     }
 }

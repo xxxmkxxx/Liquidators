@@ -34,6 +34,7 @@ public class LoginController {
     public void login() {
         if(checkPass()) {
             Stage stage = ControlGUI.connectFXML(getClass(), "mainPage.fxml");
+            stage.show();
             stage.setTitle("Основная страница");
 
             ControlGUI.closeWindow(loginButton);

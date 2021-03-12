@@ -14,7 +14,7 @@ import java.net.URL;
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-        ControlGUI.connectFXML(stage, getClass(), "loginPage.fxml");
+        ControlGUI.connectFXML(stage, getClass(), "loginPage.fxml").show();
         stage.setTitle("Страница входа");
 
     }

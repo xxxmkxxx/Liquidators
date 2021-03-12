@@ -1,6 +1,7 @@
 package com.xxxmkxxx.liquidatorsHCS.gui.controllers;
 
 import com.xxxmkxxx.liquidatorsHCS.Skript;
+import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -128,6 +129,11 @@ public class MainController {
             setValueToLabelInInfo(skript.getCountAccaunt(), skript.getAllTime());
             errorLabel.setText("");
         }
+    }
+
+    public void openSettings() {
+        ControlGUI.connectFXML(getClass(), "settingsPage.fxml").show();
+        ControlGUI.getStage(updateButton).close();
     }
 
     private void setValueToLabelInAccaunt(int numberAccaunt) {
