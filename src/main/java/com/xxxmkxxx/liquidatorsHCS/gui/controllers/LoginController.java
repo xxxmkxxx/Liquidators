@@ -3,9 +3,6 @@ package com.xxxmkxxx.liquidatorsHCS.gui.controllers;
 import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -14,13 +11,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginController {
     private Map <String, String> accounts = new HashMap();
+    public static ControlGUI lastController;
 
     @FXML
     TextField loginField;
@@ -33,11 +29,15 @@ public class LoginController {
 
     public void login() {
         if(checkPass()) {
-            Stage stage = ControlGUI.connectFXML(getClass(), "mainPage.fxml");
+            ControlGUI mainController = new ControlGUI(getClass(), "mainPage.fxml");
+            Stage stage = mainController.connectFXML();
+
+            MainController.mainController = mainController;
+
             stage.show();
             stage.setTitle("Основная страница");
 
-            ControlGUI.closeWindow(loginButton);
+            lastController.closeWindow();
         }
         else {
             errorLabel.setText("Пароль неверный!");
@@ -67,7 +67,7 @@ public class LoginController {
     }
 
     public void isPressEnter() {
-        ControlGUI.getStage(loginButton).getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        lastController.getStage().getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(keyEvent.getCode().equals(KeyCode.ENTER)) {

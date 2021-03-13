@@ -1,22 +1,15 @@
 package com.xxxmkxxx.liquidatorsHCS.gui;
 
-import com.xxxmkxxx.liquidatorsHCS.Skript;
+import com.xxxmkxxx.liquidatorsHCS.gui.controllers.LoginController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.*;
-import java.net.URL;
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) {
-        ControlGUI.connectFXML(stage, getClass(), "loginPage.fxml").show();
-        stage.setTitle("Страница входа");
-
+        ControlGUI loginController = new ControlGUI(getClass(), "loginPage.fxml");
+        loginController.connectFXML(stage).show();
+        LoginController.lastController = loginController;
     }
 
     public static void runApp(String [] args){

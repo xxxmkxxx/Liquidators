@@ -14,6 +14,7 @@ import java.io.*;
 public class MainController {
     private Skript skript = new Skript();
     private String pathToFile = "";
+    static ControlGUI mainController;
 
     @FXML
     Button updateButton;
@@ -132,8 +133,11 @@ public class MainController {
     }
 
     public void openSettings() {
-        ControlGUI.connectFXML(getClass(), "settingsPage.fxml").show();
-        ControlGUI.getStage(updateButton).close();
+        ControlGUI settingsController = new ControlGUI(getClass(), "settingsPage.fxml");
+        settingsController.connectInnerFXML("settings/settingsMain.fxml").show();
+        SettingsController.settingsController = settingsController;
+        SettingsController.lastController = mainController;
+        mainController.getStage().hide();
     }
 
     private void setValueToLabelInAccaunt(int numberAccaunt) {

@@ -10,60 +10,107 @@ import java.io.IOException;
 import java.net.URL;
 
 public class ControlGUI {
-    public static Stage connectFXML(Class AnyClass, String nameFXML) {
+    private Class AnyClass;
+    private String nameFXML;
+    private Stage stage;
+    private FXMLLoader loader;
+
+
+    public Stage connectFXML() {
         Stage stage = new Stage();
 
-        URL url = AnyClass.getResource("/" + nameFXML);
-        FXMLLoader loader = new FXMLLoader(url);
-
-        Parent root = null;
+        Scene scene = null;
         try {
-            root = loader.load();
+            scene = new Scene(loader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        Scene scene = new Scene(root);
 
         stage.setScene(scene);
         stage.show();
 
+        this.stage = stage;
         return stage;
     }
 
-    public static Stage connectFXML(Stage stage, Class anyClass, String nameFXML) {
-        URL url = anyClass.getResource("/" + nameFXML);
-        FXMLLoader loader = new FXMLLoader(url);
-
-        Parent root = null;
+    public Stage connectFXML(Stage stage) {
+        Scene scene = null;
         try {
-            root = loader.load();
+            scene = new Scene(loader.load());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        Scene scene = new Scene(root);
-
         stage.setScene(scene);
 
+        this.stage = stage;
         return stage;
     }
 
-    public static void closeWindow(Button button) {
-        Stage lastStage = (Stage) button.getScene().getWindow();
-        lastStage.close();
+    public Stage connectInnerFXML(String nameInnerFXML) {
+        Stage stage = new Stage();
+
+        URL url = AnyClass.getResource("/fxml/" + nameFXML);
+        FXMLLoader mainLoader = new FXMLLoader(url);
+
+        Scene scene = null;
+        try {
+            scene = new Scene(mainLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        url = AnyClass.getResource("/fxml/" + nameInnerFXML);
+        FXMLLoader innerLoader = new FXMLLoader(url);
+
+        innerLoader.setRoot(mainLoader.getNamespace().get("insertionPoint"));
+        try {
+            innerLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        stage.setScene(scene);
+
+        this.stage = stage;
+        return stage;
     }
 
-    public static void rollUpWindow(Button button) {
-        Stage stage = (Stage) button.getScene().getWindow();
+    public void connectCSS(String nameCSS) {
+        stage.getScene().getStylesheets().add((AnyClass.getResource("/css/" + nameCSS)).toExternalForm());
+    }
+
+    public void closeWindow() {
+        stage.close();
+    }
+
+    public void rollUpWindow() {
         stage.hide();
     }
 
-    public static Stage getStage(Button button) {
-        return (Stage) button.getScene().getWindow();
+    public FXMLLoader getLoader() {
+        URL url = AnyClass.getResource("/fxml/" + nameFXML);
+        loader = new FXMLLoader(url);
+
+        return loader;
     }
 
-    public static Stage getStage(Class anyClass, String nameFXML) {
-        return connectFXML(anyClass, nameFXML);
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Stage getLastStage(ControlGUI lastControl) {
+        return lastControl.getStage();
+    }
+
+    public Class getControoller() {
+        return AnyClass;
+    }
+
+    public ControlGUI(Class AnyClass, String nameFXML) {
+        this.AnyClass = AnyClass;
+        this.nameFXML = nameFXML;
+
+        getLoader();
     }
 }
