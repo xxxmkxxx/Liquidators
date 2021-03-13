@@ -5,6 +5,7 @@ import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.quartz.SchedulerException;
@@ -16,6 +17,8 @@ public class MainController {
     private String pathToFile = "";
     static ControlGUI mainController;
 
+    @FXML
+    MenuButton actionListMenuButton;
     @FXML
     Button updateButton;
     @FXML
@@ -50,11 +53,17 @@ public class MainController {
                         skript.setIndexAccaunt(Integer.parseInt(numberAccaunt));
                         skript.runScheduler();
                         skript.getTimeLine().play();
+
                         setValueToLabelInAccaunt(Integer.parseInt(numberAccaunt));
+
+                        setDisableButtons(true, false, true, false);
                     } else {
                         skript.runScheduler();
                         skript.getTimeLine().play();
+
                         setValueToLabelInAccaunt(0);
+
+                        setDisableButtons(true, false, true, false);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -64,7 +73,10 @@ public class MainController {
             } else {
                 skript.runScheduler();
                 skript.getTimeLine().play();
+
                 setValueToLabelInAccaunt(0);
+
+                setDisableButtons(true, false, true, false);
             }
 
             stateLabel.setText("Скрипт запущен...");
@@ -84,26 +96,39 @@ public class MainController {
             e.printStackTrace();
         }
 
+        setDisableButtons(false, true, true, true);
+
         stateLabel.setText("Скрипт остановлен!!!");
+
     }
 
     public void pauseScript() {
         skript.getTimeLine().pause();
+
         try {
             skript.getScheduler().pauseAll();
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+
+        setDisableButtons(true, true, false, false);
+
         stateLabel.setText("Скрипт ожидает...");
+
     }
 
     public void continueScript() {
         skript.getTimeLine().play();
+
         try {
             skript.getScheduler().start();
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+
+        setDisableButtons(true, false, true, false);
+
+
         stateLabel.setText("Скрипт запущен...");
     }
 
@@ -153,6 +178,12 @@ public class MainController {
         allTimeToFarmLabel.setText(String.valueOf((time / (60 * 60))));
         countAllMlkLabel.setText(String.valueOf(countAccaunt * 10));
         timeAccauntLabel.setText(String.valueOf((time / 60) / countAccaunt));
+    }
+    private void setDisableButtons(boolean disableStartButton, boolean disablePauseButton, boolean disableContinueButton, boolean disableStopButton) {
+        actionListMenuButton.getItems().get(0).setDisable(disableStartButton);
+        actionListMenuButton.getItems().get(1).setDisable(disablePauseButton);
+        actionListMenuButton.getItems().get(2).setDisable(disableContinueButton);
+        actionListMenuButton.getItems().get(3).setDisable(disableStopButton);
     }
 
 }
