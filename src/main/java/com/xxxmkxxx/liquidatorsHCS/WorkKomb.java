@@ -8,6 +8,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 import java.io.*;
+import java.util.Properties;
 
 public class WorkKomb implements Job {
     private Timeline timeLine;
@@ -17,7 +18,6 @@ public class WorkKomb implements Job {
     private int indexAccaunt;
     Mouse mouse = new Mouse();
     KeyBoard keyBoard = new KeyBoard();
-    Files files = new Files();
 
     public void startSection(String pathToJava, String pathToGame, String mail, int indexAccaunt){
         this.pathToJava = pathToJava;
@@ -36,7 +36,8 @@ public class WorkKomb implements Job {
                 System.out.println(er);
             }
 
-            files.writeLineToFile("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt", String.valueOf(indexAccaunt));
+            Files.properties.setProperty("indexLastAccount", String.valueOf(indexAccaunt));
+            Files.properties.setProperty("indexLastAccount", mail);
         }));
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 30), e -> {

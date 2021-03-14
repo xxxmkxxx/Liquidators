@@ -10,7 +10,6 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.io.File;
 import java.util.*;
 
 import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
@@ -25,9 +24,6 @@ public class Skript {
     private Scheduler scheduler = null;
     private List<String> listMail;
     private String pathToMail = "";
-    private String pathToCoords = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/Coords.txt";
-    private String pathToGame = "src/main/java/com/xxxmkxxx/liquidatorsHCS/config/HCS.jar";
-    private String pathToJava = "C:\\Program Files\\Java\\jre1.8.0_281\\bin\\java";
     private int indexAccaunt = 0;
 
     public void buildScript() {
@@ -36,15 +32,15 @@ public class Skript {
         WorkKomb workKomb = new WorkKomb(timeLine);
 
         listMail = files.readFileToArray(pathToMail);
-        arrCoords = setCoords(pathToCoords);
+        arrCoords = setCoords(Files.properties.getProperty("pathToCoords"));
 
         for(int i = indexAccaunt; i < listMail.size(); i++) {
-            workKomb.startSection(pathToJava, pathToGame, listMail.get(i), i);
+            workKomb.startSection(Files.properties.getProperty("pathToJava"), Files.properties.getProperty("pathToGame"), listMail.get(i), i);
             workKomb.stayAFKSection(20, 2);
             workKomb.exitSection();
             if(i == listMail.size() - 1) {
                 timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time), e -> {
-                    new File("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt").delete();
+                    Files.properties.setProperty("indexLastAccount", String.valueOf(0));
                 }));
             }
         }

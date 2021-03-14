@@ -3,8 +3,12 @@ package com.xxxmkxxx.liquidatorsHCS.files;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
-public class Files{
+public class Files {
+    private String path;
+    public static Properties properties = new Properties();
+
     //Метод для записи содержимого файла в массив
     public List <String> readFileToArray(String path){
         File file = new File(path);
@@ -50,6 +54,26 @@ public class Files{
             fileWriter.flush();
         } catch (IOException ioException) {
             ioException.printStackTrace();
+        }
+    }
+
+    public static Properties connectProperties(String path) {
+        try(FileInputStream fileInputStream = new FileInputStream(path)) {
+            properties.load(fileInputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return properties;
+    }
+
+    public static void safeChanges(String path) {
+        try {
+            properties.store(new FileOutputStream(path), null);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

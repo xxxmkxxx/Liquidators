@@ -1,6 +1,7 @@
 package com.xxxmkxxx.liquidatorsHCS.gui.controllers;
 
 import com.xxxmkxxx.liquidatorsHCS.Skript;
+import com.xxxmkxxx.liquidatorsHCS.files.Files;
 import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -14,6 +15,7 @@ import java.io.*;
 
 public class MainController {
     private Skript skript = new Skript();
+    private String pathToProperties = "src/main/resources/properties/config.properties";
     private String pathToFile = "";
     static ControlGUI mainController;
 
@@ -46,37 +48,20 @@ public class MainController {
 
     public void startScript() {
         if(!pathToFile.equals("")) {
-            if (new File("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt").exists()) {
-                try (BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/java/com/xxxmkxxx/liquidatorsHCS/files/" + "lastAccaunt.txt"))) {
-                    String numberAccaunt = bufferedReader.readLine();
-                    if (numberAccaunt != null) {
-                        skript.setIndexAccaunt(Integer.parseInt(numberAccaunt));
-                        skript.runScheduler();
-                        skript.getTimeLine().play();
+            try (FileInputStream fileInputStream = new FileInputStream(pathToProperties)) {
+                Files.properties.load(fileInputStream);
+                int indexLastAccount = Integer.parseInt(Files.properties.getProperty("indexLastAccount"));
 
-                        setValueToLabelInAccaunt(Integer.parseInt(numberAccaunt));
-
-                        setDisableButtons(true, false, true, false);
-                    } else {
-                        skript.runScheduler();
-                        skript.getTimeLine().play();
-
-                        setValueToLabelInAccaunt(0);
-
-                        setDisableButtons(true, false, true, false);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
+                skript.setIndexAccaunt(indexLastAccount);
+                skript.buildScript();
                 skript.runScheduler();
                 skript.getTimeLine().play();
 
-                setValueToLabelInAccaunt(0);
+                setValueToLabelInAccaunt(indexLastAccount);
 
                 setDisableButtons(true, false, true, false);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             stateLabel.setText("Скрипт запущен...");
@@ -89,6 +74,11 @@ public class MainController {
     public void stopScript() {
         setValueToLabelInAccaunt();
         skript.getTimeLine().stop();
+        skript.setIndexAccaunt(0);
+
+        Files.properties.setProperty("indexLastAccount", String.valueOf(0));
+        Files.properties.setProperty("lastAccount", "");
+        Files.safeChanges(pathToProperties);
 
         try {
             skript.getScheduler().shutdown();
@@ -99,7 +89,6 @@ public class MainController {
         setDisableButtons(false, true, true, true);
 
         stateLabel.setText("Скрипт остановлен!!!");
-
     }
 
     public void pauseScript() {
@@ -178,6 +167,7 @@ public class MainController {
         allTimeToFarmLabel.setText(String.valueOf((time / (60 * 60))));
         countAllMlkLabel.setText(String.valueOf(countAccaunt * 10));
         timeAccauntLabel.setText(String.valueOf((time / 60) / countAccaunt));
+        tempNickLabel.setText(Files.properties.getProperty("expenseAccount"));
     }
     private void setDisableButtons(boolean disableStartButton, boolean disablePauseButton, boolean disableContinueButton, boolean disableStopButton) {
         actionListMenuButton.getItems().get(0).setDisable(disableStartButton);
@@ -186,4 +176,7 @@ public class MainController {
         actionListMenuButton.getItems().get(3).setDisable(disableStopButton);
     }
 
+    public MainController() {
+        Files.connectProperties(pathToProperties);
+    }
 }
