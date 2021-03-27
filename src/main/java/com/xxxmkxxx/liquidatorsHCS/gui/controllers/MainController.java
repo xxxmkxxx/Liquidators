@@ -17,7 +17,9 @@ public class MainController {
     private Skript skript = new Skript();
     private String pathToProperties = "src/main/resources/properties/config.properties";
     private String pathToFile = "";
-    static ControlGUI mainController;
+    public static ControlGUI mainController;
+    private boolean isStarted = false;
+
 
     @FXML
     MenuButton actionListMenuButton;
@@ -60,6 +62,7 @@ public class MainController {
                 setValueToLabelInAccaunt(indexLastAccount);
 
                 setDisableButtons(true, false, true, false);
+                isStarted = true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -72,19 +75,20 @@ public class MainController {
     }
 
     public void stopScript() {
+        isStarted = false;
         setValueToLabelInAccaunt();
         skript.getTimeLine().stop();
         skript.setIndexAccaunt(0);
-
-        Files.properties.setProperty("indexLastAccount", String.valueOf(0));
-        Files.properties.setProperty("lastAccount", "");
-        Files.safeChanges(pathToProperties);
 
         try {
             skript.getScheduler().shutdown();
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+
+        Files.properties.setProperty("indexLastAccount", String.valueOf(0));
+        Files.properties.setProperty("lastAccount", "");
+        Files.safeChanges(pathToProperties);
 
         setDisableButtons(false, true, true, true);
 
@@ -121,6 +125,14 @@ public class MainController {
         stateLabel.setText("Скрипт запущен...");
     }
 
+    public void setInfo() {
+        if(isStarted) {
+            Files.connectProperties(pathToProperties);
+            int indexLastAccount = Integer.parseInt(Files.properties.getProperty("indexLastAccount"));
+            setValueToLabelInAccaunt(indexLastAccount);
+        }
+    }
+
     public void chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Открыть файл");
@@ -154,7 +166,7 @@ public class MainController {
         mainController.getStage().hide();
     }
 
-    private void setValueToLabelInAccaunt(int numberAccaunt) {
+    public void setValueToLabelInAccaunt(int numberAccaunt) {
         currentNumberAccauntLabel.setText(String.valueOf(numberAccaunt + 1));
         currentNickAccauntLabel.setText(skript.getListMail().get(numberAccaunt));
     }

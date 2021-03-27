@@ -1,6 +1,8 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
 import com.xxxmkxxx.liquidatorsHCS.files.Files;
+import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
+import com.xxxmkxxx.liquidatorsHCS.gui.controllers.MainController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -16,8 +18,7 @@ import static org.quartz.CronScheduleBuilder.dailyAtHourAndMinute;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public class Skript {
-    private Timeline timeLine;
+public class Skript extends WorkKomb {
     static int time = 1;
     private int allTime = 0;
     static int arrCoords[][];
@@ -29,15 +30,15 @@ public class Skript {
     public void buildScript() {
         Files files = new Files();
         timeLine = new Timeline();
-        WorkKomb workKomb = new WorkKomb(timeLine);
+
 
         listMail = files.readFileToArray(pathToMail);
         arrCoords = setCoords(Files.properties.getProperty("pathToCoords"));
 
         for(int i = indexAccaunt; i < listMail.size(); i++) {
-            workKomb.startSection(Files.properties.getProperty("pathToJava"), Files.properties.getProperty("pathToGame"), listMail.get(i), i);
-            workKomb.stayAFKSection(20, 2);
-            workKomb.exitSection();
+            startSection(Files.properties.getProperty("pathToJava"), Files.properties.getProperty("pathToGame"), listMail.get(i), i);
+            stayAFKSection(20, 2);
+            exitSection();
             if(i == listMail.size() - 1) {
                 timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time), e -> {
                     Files.properties.setProperty("indexLastAccount", String.valueOf(0));

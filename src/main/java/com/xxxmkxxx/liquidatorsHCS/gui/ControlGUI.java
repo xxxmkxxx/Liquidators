@@ -99,10 +99,6 @@ public class ControlGUI {
         return stage;
     }
 
-    public Stage getLastStage(ControlGUI lastControl) {
-        return lastControl.getStage();
-    }
-
     public Class getControoller() {
         return AnyClass;
     }

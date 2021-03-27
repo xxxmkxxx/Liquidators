@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<fx:root prefHeight="346.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane" fx:controller="com.xxxmkxxx.liquidatorsHCS.gui.controllers.SettingsController">
+<fx:root prefHeight="346.0" prefWidth="456.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane" fx:controller="com.xxxmkxxx.liquidatorsHCS.gui.controllers.SettingsMainController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Расходный аккаунт:" />
       <TextField fx:id="expenseAccountField" layoutX="138.0" layoutY="10.0" />

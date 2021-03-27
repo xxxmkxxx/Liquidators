@@ -1,23 +1,23 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
 import com.xxxmkxxx.liquidatorsHCS.files.Files;
+import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
+import com.xxxmkxxx.liquidatorsHCS.gui.controllers.LoginController;
+import com.xxxmkxxx.liquidatorsHCS.gui.controllers.MainController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
-import java.io.*;
-import java.util.Properties;
-
 public class WorkKomb implements Job {
-    private Timeline timeLine;
+    protected Timeline timeLine;
     private String pathToGame;
     private String mail;
     private String pathToJava;
     private int indexAccaunt;
-    Mouse mouse = new Mouse();
-    KeyBoard keyBoard = new KeyBoard();
+    private Mouse mouse = new Mouse();
+    private KeyBoard keyBoard = new KeyBoard();
 
     public void startSection(String pathToJava, String pathToGame, String mail, int indexAccaunt){
         this.pathToJava = pathToJava;
@@ -37,7 +37,8 @@ public class WorkKomb implements Job {
             }
 
             Files.properties.setProperty("indexLastAccount", String.valueOf(indexAccaunt));
-            Files.properties.setProperty("indexLastAccount", mail);
+            Files.properties.setProperty("lastAccount", mail);
+            Files.safeChanges();
         }));
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 30), e -> {
@@ -60,7 +61,9 @@ public class WorkKomb implements Job {
             mouse.clickButton();
         }));
 
-        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 7), e -> {
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 7)));
+
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 1), e -> {
             mouse.moveXY(Skript.arrCoords[1][0], Skript.arrCoords[1][1]);
             mouse.clickButton();
         }));
@@ -68,7 +71,7 @@ public class WorkKomb implements Job {
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += (2 * 60))));
     }
 
-    public void stayAFKSection(int timeAFK, int minits){
+    final public void stayAFKSection(int timeAFK, int minits){
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 1), e -> {
             mouse.moveXY(Skript.arrCoords[2][0], Skript.arrCoords[2][1]); //Кнопка DayZ 3
             mouse.clickButton();
@@ -94,7 +97,7 @@ public class WorkKomb implements Job {
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += (timeAFK * 60))));
     }
 
-    public void exitSection(){
+    final public void exitSection(){
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 4), e -> keyBoard.pressKey("Esc")));
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 2), e -> {
@@ -140,10 +143,9 @@ public class WorkKomb implements Job {
         timeLine = new Timeline();
 
         exitSection();
-        startSection(pathToJava, pathToGame, mail, indexAccaunt);
-    }
 
-    public WorkKomb(Timeline timeLine) {
-        this.timeLine = timeLine;
+
+
+        startSection(pathToJava, pathToGame, mail, indexAccaunt);
     }
 }
