@@ -1,9 +1,6 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
-import com.xxxmkxxx.liquidatorsHCS.files.Files;
-import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
-import com.xxxmkxxx.liquidatorsHCS.gui.controllers.LoginController;
-import com.xxxmkxxx.liquidatorsHCS.gui.controllers.MainController;
+import com.xxxmkxxx.liquidatorsHCS.files.FileController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -36,9 +33,9 @@ public class WorkKomb implements Job {
                 System.out.println(er);
             }
 
-            Files.properties.setProperty("indexLastAccount", String.valueOf(indexAccaunt));
-            Files.properties.setProperty("lastAccount", mail);
-            Files.safeChanges();
+            Config.setField("indexLastAccount", String.valueOf(indexAccaunt));
+            Config.setField("lastAccount", mail);
+            Config.safe();
         }));
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 30), e -> {
@@ -53,6 +50,18 @@ public class WorkKomb implements Job {
 
         timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 1), e -> {
             mouse.moveXY(Skript.arrCoords[0][0], Skript.arrCoords[0][1]);
+            mouse.clickButton();
+        }));
+
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 6), e -> {
+            mouse.moveXY(Skript.arrCoords[1][0], Skript.arrCoords[1][1]);
+            mouse.clickButton();
+        }));
+
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 7)));
+
+        timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time += 1), e -> {
+            mouse.moveXY(Skript.arrCoords[1][0], Skript.arrCoords[1][1]);
             mouse.clickButton();
         }));
 

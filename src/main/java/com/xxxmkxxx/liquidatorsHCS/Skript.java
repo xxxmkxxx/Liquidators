@@ -1,8 +1,6 @@
 package com.xxxmkxxx.liquidatorsHCS;
 
-import com.xxxmkxxx.liquidatorsHCS.files.Files;
-import com.xxxmkxxx.liquidatorsHCS.gui.ControlGUI;
-import com.xxxmkxxx.liquidatorsHCS.gui.controllers.MainController;
+import com.xxxmkxxx.liquidatorsHCS.files.FileController;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -28,20 +26,20 @@ public class Skript extends WorkKomb {
     private int indexAccaunt = 0;
 
     public void buildScript() {
-        Files files = new Files();
+        FileController files = new FileController();
         timeLine = new Timeline();
 
 
         listMail = files.readFileToArray(pathToMail);
-        arrCoords = setCoords(Files.properties.getProperty("pathToCoords"));
+        arrCoords = setCoords(Config.getField("pathToCoords"));
 
         for(int i = indexAccaunt; i < listMail.size(); i++) {
-            startSection(Files.properties.getProperty("pathToJava"), Files.properties.getProperty("pathToGame"), listMail.get(i), i);
+            startSection(Config.getField("pathToJava"), Config.getField("pathToGame"), listMail.get(i), i);
             stayAFKSection(20, 2);
             exitSection();
             if(i == listMail.size() - 1) {
                 timeLine.getKeyFrames().add(new KeyFrame(Duration.seconds(Skript.time), e -> {
-                    Files.properties.setProperty("indexLastAccount", String.valueOf(0));
+                    Config.setField("indexLastAccount", String.valueOf(0));
                 }));
             }
         }
@@ -71,7 +69,7 @@ public class Skript extends WorkKomb {
     }
 
     private static int [][] setCoords(String pathToCoords){
-        List <String> listCoords = new Files().readFileToArray(pathToCoords);
+        List <String> listCoords = new FileController().readFileToArray(pathToCoords);
         int arrCoords[][] = new int[listCoords.size()][2];
 
         for(int i = 0; i < listCoords.size(); i++){

@@ -1,6 +1,7 @@
 package com.xxxmkxxx.liquidatorsHCS.gui.controllers;
 
-import com.xxxmkxxx.liquidatorsHCS.files.Files;
+import com.xxxmkxxx.liquidatorsHCS.Config;
+import com.xxxmkxxx.liquidatorsHCS.files.FileController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -10,6 +11,6 @@ public class SettingsMainController {
 
     @FXML
     public void initialize() {
-        expenseAccountField.setText(Files.properties.getProperty("expenseAccount"));
+        expenseAccountField.setText(Config.getField("expenseAccount"));
     }
 }

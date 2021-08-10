@@ -16,7 +16,6 @@ import java.util.Map;
 
 public class LoginController {
     private Map <String, String> accounts = new HashMap();
-    public static ControlGUI lastController;
 
     @FXML
     TextField loginField;
@@ -29,15 +28,13 @@ public class LoginController {
 
     public void login() {
         if(checkPass()) {
+            ControlGUI.getStage(loginField).close();
+
             ControlGUI mainController = new ControlGUI(getClass(), "mainPage.fxml");
             Stage stage = mainController.connectFXML();
 
-            MainController.mainController = mainController;
-
             stage.show();
             stage.setTitle("Основная страница");
-
-            lastController.closeWindow();
         }
         else {
             errorLabel.setText("Пароль неверный!");
@@ -64,16 +61,5 @@ public class LoginController {
         accounts.put("Keltek", "1576481320w");
         accounts.put("xxxmkxxx", "1237894560q++");
         accounts.put("Cyrex12", "qetuo2");
-    }
-
-    public void isPressEnter() {
-        lastController.getStage().getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if(keyEvent.getCode().equals(KeyCode.ENTER)) {
-                    login();
-                }
-            }
-        });
     }
 }
